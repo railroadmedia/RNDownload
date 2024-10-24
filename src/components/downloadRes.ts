@@ -39,17 +39,22 @@ export const downloadRes = (
     }
     const dirs = ReactNativeBlobUtil.fs.dirs;
     const resExtension = resource?.resource_url?.split('.').pop();
+    const resourceId = resourceUrl.includes('http')
+      ? resourceUrl?.substring(resourceUrl.lastIndexOf('-') + 1, resourceUrl.lastIndexOf('.'))
+      : resourceUrl?.substring(resourceUrl.lastIndexOf('/') + 1, resourceUrl.lastIndexOf('.'));
 
     const filePath = IS_IOS
       ? `${dirs.DocumentDir}/${lessonTitle?.replace(
           /[&\/\\#,+()$~%.,^'":*?!|<>{}]/g,
           ''
-        )}/${resource?.resource_id}.${resExtension}`
+        )}/${resourceId}.${resExtension}`
       : `${dirs.DownloadDir}/${lessonTitle?.replace(
           /[&\/\\#,+()$~%.,^'":*?!|<>{}]/g,
           ''
-        )}/${resource?.resource_id}.${resExtension}`;
+        )}/${resourceId}.${resExtension}`;
+
     const exists = await ReactNativeBlobUtil.fs.exists(filePath);
+
     if (exists) {
       resolve();
       if (!notOppeningAfterDld) {

@@ -28,10 +28,15 @@ export interface ILesson {
   mobile_app_url: string;
   published_on: string;
   type: string;
-  video_playback_endpoints: IVideo[];
+  video: {
+    type: 'youtube-video' | 'vimeo-video';
+    external_id?: string;
+    video_playback_endpoints: IVideo[];
+  };
   resources: IResource[];
   assignments: IAssignment[];
   comments: IComment[];
+  chapters: IChapter[];
   brand: Brand;
   related_lessons?: ILesson[];
   instructor?: ICoach[];
@@ -55,13 +60,15 @@ export interface IAssignment {
   description: string;
   soundslice_slug?: string;
   timecode?: string;
-  sheet_music_image_url?: Array<{
-    content_id: number;
-    id: number;
-    key: string;
-    value: string;
-    whRatio: number;
-  }>;
+  sheet_music_image_url?: IMusicSheet[];
+}
+
+export interface IMusicSheet {
+  content_id?: number;
+  id?: number;
+  key?: string;
+  value: string;
+  whRatio?: number;
 }
 
 export interface ICoach {
@@ -129,4 +136,11 @@ export interface IOfflineContent {
   sizeInBytes: number;
   lesson?: ILesson;
   overview?: IOverview;
+}
+
+export interface IChapter {
+  id: string;
+  chapter_timecode: number;
+  chapter_description: string;
+  chapter_thumbnail_url: string;
 }

@@ -1,4 +1,4 @@
-import type { Brand, IComment, IDownloading, ILesson, IOfflineContent, IVideo } from '../entity';
+import type { Brand, IDownloading, ILesson, IOfflineContent, IVideo } from '../entity';
 import { PIX_RATIO, WINDOW_WIDTH } from '../helper';
 
 export const handleLessonSize = (oc: IOfflineContent, taskId: string, bytes: number): void => {
@@ -27,15 +27,14 @@ export const fetchExpectedBytes = (oc: IOfflineContent, dlding?: IDownloading): 
 
 export const derefLesson = (
   lesson: ILesson,
-  comments: IComment[] | undefined,
   brand: Brand
 ): ILesson => {
   const result: ILesson = {
     ...lesson,
     brand,
-    video_playback_endpoints: lesson?.video_playback_endpoints
-      ? hd720OrHighestVideo(lesson.video_playback_endpoints)
-      : [],
+    video: { video_playback_endpoints: lesson?.video?.video_playback_endpoints
+      ? hd720OrHighestVideo(lesson.video?.video_playback_endpoints)
+      : [] },
     resources: Object.values(lesson?.resources || {})?.map(r => ({
       ...r,
     })),
@@ -43,7 +42,6 @@ export const derefLesson = (
   if (lesson?.assignments) {
     result.assignments = JSON.parse(JSON.stringify(lesson.assignments));
   }
-  result.comments = JSON.parse(JSON.stringify(comments || lesson?.comments));
   return result;
 };
 
