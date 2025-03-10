@@ -11,7 +11,7 @@
   },
   "peerDependencies": {
     "@react-native-community/netinfo": "^11.3.2",
-    "@kesha-antonov/react-native-background-downloader": "git+https://github.com/railroadmedia/react-native-background-downloader2.git",
+    "@kesha-antonov/react-native-background-downloader": "git+https://github.com/railroadmedia/react-native-background-downloader2.git#RN-update",
     "react-native-blob-util": "^0.19.11",
     "react-native-device-info": "^11.0.0",
     "react-native-linear-gradient": "^2.8.2",

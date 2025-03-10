@@ -1409,9 +1409,9 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@kesha-antonov/react-native-background-downloader@git+https://github.com/railroadmedia/react-native-background-downloader2.git":
-  version "3.2.1"
-  resolved "git+ssh://git@github.com/railroadmedia/react-native-background-downloader2.git#645687a048caf97fe5c78ccb7447327f4ef04317"
+"@kesha-antonov/react-native-background-downloader@git+https://github.com/railroadmedia/react-native-background-downloader2.git#RN-update":
+  version "3.2.6"
+  resolved "git+ssh://git@github.com/railroadmedia/react-native-background-downloader2.git#c647c0753f26b17d1cb0d43ecae566a3bff366f8"
 
 "@nicolo-ribaudo/eslint-scope-5-internals@5.1.1-v1":
   version "5.1.1-v1"
