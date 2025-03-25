@@ -1,5 +1,5 @@
 // eslint-disable-next-line react-native/split-platform-components
-import { Alert, DeviceEventEmitter, PermissionsAndroid } from 'react-native';
+import { Alert, DeviceEventEmitter, PermissionsAndroid, Platform } from 'react-native';
 import ReactNativeBlobUtil from 'react-native-blob-util';
 import DeviceInfo from 'react-native-device-info';
 import { IS_IOS } from '../helper';
@@ -129,7 +129,7 @@ export const downloadRes = (
       } else {
         try {
           let granted = PermissionsAndroid.RESULTS.DENIED;
-          if (Number(DeviceInfo.getSystemVersion()) >= 13) {
+          if (Number(DeviceInfo.getSystemVersion()) >= 13 || Platform.Version < 33) {
             granted = PermissionsAndroid.RESULTS.GRANTED;
           } else {
             granted = await PermissionsAndroid.request(
