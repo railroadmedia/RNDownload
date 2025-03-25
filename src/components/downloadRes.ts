@@ -129,7 +129,7 @@ export const downloadRes = (
       } else {
         try {
           let granted = PermissionsAndroid.RESULTS.DENIED;
-          if (Number(DeviceInfo.getSystemVersion()) >= 13 || Platform.Version < 33) {
+          if (Platform.Version < 33) {
             granted = PermissionsAndroid.RESULTS.GRANTED;
           } else {
             granted = await PermissionsAndroid.request(

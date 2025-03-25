@@ -11,6 +11,7 @@ import {
   StyleProp,
   ViewStyle,
   AppState,
+  Platform
 } from 'react-native';
 import ReactNativeBlobUtil from 'react-native-blob-util';
 import DeviceInfo from 'react-native-device-info';
@@ -398,7 +399,7 @@ const DownloadV2 = forwardRef<{ deleteItem: (item: any) => void }, IDownloadV2>(
   const downloadResource = async (lessons: ILesson[]): Promise<void> => {
     if (!IS_IOS) {
       let granted = PermissionsAndroid.RESULTS.DENIED;
-      if (Number(DeviceInfo.getSystemVersion()) >= 13) {
+      if (Platform.Version < 33) {
         granted = PermissionsAndroid.RESULTS.GRANTED;
       } else {
         granted = await PermissionsAndroid.request(
