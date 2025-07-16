@@ -1,7 +1,6 @@
 // eslint-disable-next-line react-native/split-platform-components
 import { Alert, DeviceEventEmitter, PermissionsAndroid, Platform } from 'react-native';
 import ReactNativeBlobUtil from 'react-native-blob-util';
-import DeviceInfo from 'react-native-device-info';
 import { IS_IOS } from '../helper';
 import type { IResource } from '../entity';
 
@@ -16,6 +15,36 @@ const getTypeByExtension = (path: string): string | undefined => {
     return 'application/zip';
   }
 };
+
+export async function hasStoragePermission(): Promise<boolean> {
+  if (Platform.OS !== 'android') {
+    return true;
+  }
+
+  const apiLevel = Number(Platform.Version);
+
+  if (apiLevel >= 29) {
+    // Android 10 and above: writing to app-specific directories needs no permission
+    return true;
+  }
+
+  const permission = PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE;
+  const hasPermission = await PermissionsAndroid.check(permission);
+
+  if (hasPermission) {
+    return true;
+  }
+
+  const status = await PermissionsAndroid.request(permission,
+    {
+      title: 'Write to external Storage',
+      message: 'For downloading resources we need your permission',
+      buttonNeutral: 'Ask Me Later',
+      buttonNegative: 'Cancel',
+      buttonPositive: 'OK',
+    });
+  return status === PermissionsAndroid.RESULTS.GRANTED;
+}
 
 export const downloadRes = (
   resource: IResource,
@@ -128,22 +157,7 @@ export const downloadRes = (
         }
       } else {
         try {
-          let granted = PermissionsAndroid.RESULTS.DENIED;
-          if (Platform.Version < 33) {
-            granted = PermissionsAndroid.RESULTS.GRANTED;
-          } else {
-            granted = await PermissionsAndroid.request(
-              PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-              {
-                title: 'Write to external Storage',
-                message: 'For downloading resources we need your permission',
-                buttonNeutral: 'Ask Me Later',
-                buttonNegative: 'Cancel',
-                buttonPositive: 'OK',
-              }
-            );
-          }
-          if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+          if (await hasStoragePermission()) {
             ReactNativeBlobUtil.fs.df().then(info => {
               const { free, internal_free, external_free } = info;
               const freeSpaceInMb =
