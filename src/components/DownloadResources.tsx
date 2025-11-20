@@ -37,6 +37,7 @@ export interface IDownloadResources {
     borderColor: string;
     color: string;
   };
+  onResourcePressed?: (resource: any) => void;
 }
 
 const DownloadResources: FunctionComponent<IDownloadResources> = ({
@@ -46,10 +47,12 @@ const DownloadResources: FunctionComponent<IDownloadResources> = ({
   isConnected,
   onClose,
   showNoConnectionAlert,
+  onResourcePressed,
 }) => {
   const onDownloadRes = useCallback(
     async (resource: IResource, index: number) => {
       onClose();
+      onResourcePressed?.(resource);
       downloadRes(
         resource,
         lessonTitle,
@@ -61,7 +64,7 @@ const DownloadResources: FunctionComponent<IDownloadResources> = ({
         showNoConnectionAlert
       );
     },
-    [lessonTitle, isConnected, showNoConnectionAlert, onClose]
+    [lessonTitle, isConnected, showNoConnectionAlert, onClose, onResourcePressed]
   );
 
   return (
